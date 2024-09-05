@@ -1,0 +1,792 @@
+EVA1_9_CREATE_SELECT_LIKE_TEMP
+
+MySQL Shell 8.0.37
+
+Copyright (c) 2016, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.37 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use tbd_eva1;
+Default schema set to `tbd_eva1`.
+Fetching global names, object names from `tbd_eva1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create temporary table prueba (
+                                         -> id int auto_increment key,
+                                         -> nombre varchar(50),
+                                         -> apellido varchar(50) not null,
+                                         -> edad int not null,
+                                         -> genero ('0', '1','2','3'));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('0', '1','2','3'))' at line 6
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create temporary table prueba ( id int auto_increment key, nombre varchar(50), apellido varchar(50) not null, edad int not null, genero enum('0', '1','2','3'));
+Query OK, 0 rows affected (0.0095 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > show tables
+                                         -> ;
++--------------------+
+| Tables_in_tbd_eva1 |
++--------------------+
+| automovil          |
+| cliente            |
+| docente            |
+| mascotas           |
+| pelicula           |
+| playeras           |
+| student            |
+| tv                 |
++--------------------+
+8 rows in set (0.0109 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > desc prueba;
++----------+-----------------------+------+-----+---------+----------------+
+| Field    | Type                  | Null | Key | Default | Extra          |
++----------+-----------------------+------+-----+---------+----------------+
+| id       | int                   | NO   | PRI | NULL    | auto_increment |
+| nombre   | varchar(50)           | YES  |     | NULL    | NULL           |
+| apellido | varchar(50)           | NO   |     | NULL    | NULL           |
+| edad     | int                   | NO   |     | NULL    | NULL           |
+| genero   | enum('0','1','2','3') | YES  |     | NULL    | NULL           |
++----------+-----------------------+------+-----+---------+----------------+
+5 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from prueba;
+Empty set (0.0011 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > insert into prueba(nombre, apellido, edad) values
+                                         -> ('rosalia
+                                         -> ', 'motomami', 30),
+                                         -> ('charli', 'xcx', 20),
+                                         -> ('lana', 'del rey', 39),
+                                         -> ('bjork', 'bjrok', 60);
+Query OK, 4 rows affected (0.0101 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from prueba;
++----+----------+----------+------+--------+
+| id | nombre   | apellido | edad | genero |
++----+----------+----------+------+--------+
+|  1 | rosalia
+ | motomami |   30 | NULL   |
+|  2 | charli   | xcx      |   20 | NULL   |
+|  3 | lana     | del rey  |   39 | NULL   |
+|  4 | bjork    | bjrok    |   60 | NULL   |
++----+----------+----------+------+--------+
+4 rows in set (0.0004 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > \disconnect
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 9
+Server version: 8.0.37 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > select * from prueba;
+ERROR: 1046 (3D000): No database selected
+ MySQL  localhost:3306 ssl  SQL > use tbd_eva1;
+Default schema set to `tbd_eva1`.
+Fetching global names, object names from `tbd_eva1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from prueba;
+ERROR: 1146 (42S02): Table 'tbd_eva1.prueba' doesn't exist
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > use sakila;
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc actor;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| actor_id    | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from actor;
++----------+
+| count(*) |
++----------+
+|      200 |
++----------+
+1 row in set (0.0235 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select * from actor;
++----------+-------------+--------------+---------------------+
+| actor_id | first_name  | last_name    | last_update         |
++----------+-------------+--------------+---------------------+
+|        1 | PENELOPE    | GUINESS      | 2006-02-15 04:34:33 |
+|        2 | NICK        | WAHLBERG     | 2006-02-15 04:34:33 |
+|        3 | ED          | CHASE        | 2006-02-15 04:34:33 |
+|        4 | JENNIFER    | DAVIS        | 2006-02-15 04:34:33 |
+|        5 | JOHNNY      | LOLLOBRIGIDA | 2006-02-15 04:34:33 |
+|        6 | BETTE       | NICHOLSON    | 2006-02-15 04:34:33 |
+|        7 | GRACE       | MOSTEL       | 2006-02-15 04:34:33 |
+|        8 | MATTHEW     | JOHANSSON    | 2006-02-15 04:34:33 |
+|        9 | JOE         | SWANK        | 2006-02-15 04:34:33 |
+|       10 | CHRISTIAN   | GABLE        | 2006-02-15 04:34:33 |
+|       11 | ZERO        | CAGE         | 2006-02-15 04:34:33 |
+|       12 | KARL        | BERRY        | 2006-02-15 04:34:33 |
+|       13 | UMA         | WOOD         | 2006-02-15 04:34:33 |
+|       14 | VIVIEN      | BERGEN       | 2006-02-15 04:34:33 |
+|       15 | CUBA        | OLIVIER      | 2006-02-15 04:34:33 |
+|       16 | FRED        | COSTNER      | 2006-02-15 04:34:33 |
+|       17 | HELEN       | VOIGHT       | 2006-02-15 04:34:33 |
+|       18 | DAN         | TORN         | 2006-02-15 04:34:33 |
+|       19 | BOB         | FAWCETT      | 2006-02-15 04:34:33 |
+|       20 | LUCILLE     | TRACY        | 2006-02-15 04:34:33 |
+|       21 | KIRSTEN     | PALTROW      | 2006-02-15 04:34:33 |
+|       22 | ELVIS       | MARX         | 2006-02-15 04:34:33 |
+|       23 | SANDRA      | KILMER       | 2006-02-15 04:34:33 |
+|       24 | CAMERON     | STREEP       | 2006-02-15 04:34:33 |
+|       25 | KEVIN       | BLOOM        | 2006-02-15 04:34:33 |
+|       26 | RIP         | CRAWFORD     | 2006-02-15 04:34:33 |
+|       27 | JULIA       | MCQUEEN      | 2006-02-15 04:34:33 |
+|       28 | WOODY       | HOFFMAN      | 2006-02-15 04:34:33 |
+|       29 | ALEC        | WAYNE        | 2006-02-15 04:34:33 |
+|       30 | SANDRA      | PECK         | 2006-02-15 04:34:33 |
+|       31 | SISSY       | SOBIESKI     | 2006-02-15 04:34:33 |
+|       32 | TIM         | HACKMAN      | 2006-02-15 04:34:33 |
+|       33 | MILLA       | PECK         | 2006-02-15 04:34:33 |
+|       34 | AUDREY      | OLIVIER      | 2006-02-15 04:34:33 |
+|       35 | JUDY        | DEAN         | 2006-02-15 04:34:33 |
+|       36 | BURT        | DUKAKIS      | 2006-02-15 04:34:33 |
+|       37 | VAL         | BOLGER       | 2006-02-15 04:34:33 |
+|       38 | TOM         | MCKELLEN     | 2006-02-15 04:34:33 |
+|       39 | GOLDIE      | BRODY        | 2006-02-15 04:34:33 |
+|       40 | JOHNNY      | CAGE         | 2006-02-15 04:34:33 |
+|       41 | JODIE       | DEGENERES    | 2006-02-15 04:34:33 |
+|       42 | TOM         | MIRANDA      | 2006-02-15 04:34:33 |
+|       43 | KIRK        | JOVOVICH     | 2006-02-15 04:34:33 |
+|       44 | NICK        | STALLONE     | 2006-02-15 04:34:33 |
+|       45 | REESE       | KILMER       | 2006-02-15 04:34:33 |
+|       46 | PARKER      | GOLDBERG     | 2006-02-15 04:34:33 |
+|       47 | JULIA       | BARRYMORE    | 2006-02-15 04:34:33 |
+|       48 | FRANCES     | DAY-LEWIS    | 2006-02-15 04:34:33 |
+|       49 | ANNE        | CRONYN       | 2006-02-15 04:34:33 |
+|       50 | NATALIE     | HOPKINS      | 2006-02-15 04:34:33 |
+|       51 | GARY        | PHOENIX      | 2006-02-15 04:34:33 |
+|       52 | CARMEN      | HUNT         | 2006-02-15 04:34:33 |
+|       53 | MENA        | TEMPLE       | 2006-02-15 04:34:33 |
+|       54 | PENELOPE    | PINKETT      | 2006-02-15 04:34:33 |
+|       55 | FAY         | KILMER       | 2006-02-15 04:34:33 |
+|       56 | DAN         | HARRIS       | 2006-02-15 04:34:33 |
+|       57 | JUDE        | CRUISE       | 2006-02-15 04:34:33 |
+|       58 | CHRISTIAN   | AKROYD       | 2006-02-15 04:34:33 |
+|       59 | DUSTIN      | TAUTOU       | 2006-02-15 04:34:33 |
+|       60 | HENRY       | BERRY        | 2006-02-15 04:34:33 |
+|       61 | CHRISTIAN   | NEESON       | 2006-02-15 04:34:33 |
+|       62 | JAYNE       | NEESON       | 2006-02-15 04:34:33 |
+|       63 | CAMERON     | WRAY         | 2006-02-15 04:34:33 |
+|       64 | RAY         | JOHANSSON    | 2006-02-15 04:34:33 |
+|       65 | ANGELA      | HUDSON       | 2006-02-15 04:34:33 |
+|       66 | MARY        | TANDY        | 2006-02-15 04:34:33 |
+|       67 | JESSICA     | BAILEY       | 2006-02-15 04:34:33 |
+|       68 | RIP         | WINSLET      | 2006-02-15 04:34:33 |
+|       69 | KENNETH     | PALTROW      | 2006-02-15 04:34:33 |
+|       70 | MICHELLE    | MCCONAUGHEY  | 2006-02-15 04:34:33 |
+|       71 | ADAM        | GRANT        | 2006-02-15 04:34:33 |
+|       72 | SEAN        | WILLIAMS     | 2006-02-15 04:34:33 |
+|       73 | GARY        | PENN         | 2006-02-15 04:34:33 |
+|       74 | MILLA       | KEITEL       | 2006-02-15 04:34:33 |
+|       75 | BURT        | POSEY        | 2006-02-15 04:34:33 |
+|       76 | ANGELINA    | ASTAIRE      | 2006-02-15 04:34:33 |
+|       77 | CARY        | MCCONAUGHEY  | 2006-02-15 04:34:33 |
+|       78 | GROUCHO     | SINATRA      | 2006-02-15 04:34:33 |
+|       79 | MAE         | HOFFMAN      | 2006-02-15 04:34:33 |
+|       80 | RALPH       | CRUZ         | 2006-02-15 04:34:33 |
+|       81 | SCARLETT    | DAMON        | 2006-02-15 04:34:33 |
+|       82 | WOODY       | JOLIE        | 2006-02-15 04:34:33 |
+|       83 | BEN         | WILLIS       | 2006-02-15 04:34:33 |
+|       84 | JAMES       | PITT         | 2006-02-15 04:34:33 |
+|       85 | MINNIE      | ZELLWEGER    | 2006-02-15 04:34:33 |
+|       86 | GREG        | CHAPLIN      | 2006-02-15 04:34:33 |
+|       87 | SPENCER     | PECK         | 2006-02-15 04:34:33 |
+|       88 | KENNETH     | PESCI        | 2006-02-15 04:34:33 |
+|       89 | CHARLIZE    | DENCH        | 2006-02-15 04:34:33 |
+|       90 | SEAN        | GUINESS      | 2006-02-15 04:34:33 |
+|       91 | CHRISTOPHER | BERRY        | 2006-02-15 04:34:33 |
+|       92 | KIRSTEN     | AKROYD       | 2006-02-15 04:34:33 |
+|       93 | ELLEN       | PRESLEY      | 2006-02-15 04:34:33 |
+|       94 | KENNETH     | TORN         | 2006-02-15 04:34:33 |
+|       95 | DARYL       | WAHLBERG     | 2006-02-15 04:34:33 |
+|       96 | GENE        | WILLIS       | 2006-02-15 04:34:33 |
+|       97 | MEG         | HAWKE        | 2006-02-15 04:34:33 |
+|       98 | CHRIS       | BRIDGES      | 2006-02-15 04:34:33 |
+|       99 | JIM         | MOSTEL       | 2006-02-15 04:34:33 |
+|      100 | SPENCER     | DEPP         | 2006-02-15 04:34:33 |
+|      101 | SUSAN       | DAVIS        | 2006-02-15 04:34:33 |
+|      102 | WALTER      | TORN         | 2006-02-15 04:34:33 |
+|      103 | MATTHEW     | LEIGH        | 2006-02-15 04:34:33 |
+|      104 | PENELOPE    | CRONYN       | 2006-02-15 04:34:33 |
+|      105 | SIDNEY      | CROWE        | 2006-02-15 04:34:33 |
+|      106 | GROUCHO     | DUNST        | 2006-02-15 04:34:33 |
+|      107 | GINA        | DEGENERES    | 2006-02-15 04:34:33 |
+|      108 | WARREN      | NOLTE        | 2006-02-15 04:34:33 |
+|      109 | SYLVESTER   | DERN         | 2006-02-15 04:34:33 |
+|      110 | SUSAN       | DAVIS        | 2006-02-15 04:34:33 |
+|      111 | CAMERON     | ZELLWEGER    | 2006-02-15 04:34:33 |
+|      112 | RUSSELL     | BACALL       | 2006-02-15 04:34:33 |
+|      113 | MORGAN      | HOPKINS      | 2006-02-15 04:34:33 |
+|      114 | MORGAN      | MCDORMAND    | 2006-02-15 04:34:33 |
+|      115 | HARRISON    | BALE         | 2006-02-15 04:34:33 |
+|      116 | DAN         | STREEP       | 2006-02-15 04:34:33 |
+|      117 | RENEE       | TRACY        | 2006-02-15 04:34:33 |
+|      118 | CUBA        | ALLEN        | 2006-02-15 04:34:33 |
+|      119 | WARREN      | JACKMAN      | 2006-02-15 04:34:33 |
+|      120 | PENELOPE    | MONROE       | 2006-02-15 04:34:33 |
+|      121 | LIZA        | BERGMAN      | 2006-02-15 04:34:33 |
+|      122 | SALMA       | NOLTE        | 2006-02-15 04:34:33 |
+|      123 | JULIANNE    | DENCH        | 2006-02-15 04:34:33 |
+|      124 | SCARLETT    | BENING       | 2006-02-15 04:34:33 |
+|      125 | ALBERT      | NOLTE        | 2006-02-15 04:34:33 |
+|      126 | FRANCES     | TOMEI        | 2006-02-15 04:34:33 |
+|      127 | KEVIN       | GARLAND      | 2006-02-15 04:34:33 |
+|      128 | CATE        | MCQUEEN      | 2006-02-15 04:34:33 |
+|      129 | DARYL       | CRAWFORD     | 2006-02-15 04:34:33 |
+|      130 | GRETA       | KEITEL       | 2006-02-15 04:34:33 |
+|      131 | JANE        | JACKMAN      | 2006-02-15 04:34:33 |
+|      132 | ADAM        | HOPPER       | 2006-02-15 04:34:33 |
+|      133 | RICHARD     | PENN         | 2006-02-15 04:34:33 |
+|      134 | GENE        | HOPKINS      | 2006-02-15 04:34:33 |
+|      135 | RITA        | REYNOLDS     | 2006-02-15 04:34:33 |
+|      136 | ED          | MANSFIELD    | 2006-02-15 04:34:33 |
+|      137 | MORGAN      | WILLIAMS     | 2006-02-15 04:34:33 |
+|      138 | LUCILLE     | DEE          | 2006-02-15 04:34:33 |
+|      139 | EWAN        | GOODING      | 2006-02-15 04:34:33 |
+|      140 | WHOOPI      | HURT         | 2006-02-15 04:34:33 |
+|      141 | CATE        | HARRIS       | 2006-02-15 04:34:33 |
+|      142 | JADA        | RYDER        | 2006-02-15 04:34:33 |
+|      143 | RIVER       | DEAN         | 2006-02-15 04:34:33 |
+|      144 | ANGELA      | WITHERSPOON  | 2006-02-15 04:34:33 |
+|      145 | KIM         | ALLEN        | 2006-02-15 04:34:33 |
+|      146 | ALBERT      | JOHANSSON    | 2006-02-15 04:34:33 |
+|      147 | FAY         | WINSLET      | 2006-02-15 04:34:33 |
+|      148 | EMILY       | DEE          | 2006-02-15 04:34:33 |
+|      149 | RUSSELL     | TEMPLE       | 2006-02-15 04:34:33 |
+|      150 | JAYNE       | NOLTE        | 2006-02-15 04:34:33 |
+|      151 | GEOFFREY    | HESTON       | 2006-02-15 04:34:33 |
+|      152 | BEN         | HARRIS       | 2006-02-15 04:34:33 |
+|      153 | MINNIE      | KILMER       | 2006-02-15 04:34:33 |
+|      154 | MERYL       | GIBSON       | 2006-02-15 04:34:33 |
+|      155 | IAN         | TANDY        | 2006-02-15 04:34:33 |
+|      156 | FAY         | WOOD         | 2006-02-15 04:34:33 |
+|      157 | GRETA       | MALDEN       | 2006-02-15 04:34:33 |
+|      158 | VIVIEN      | BASINGER     | 2006-02-15 04:34:33 |
+|      159 | LAURA       | BRODY        | 2006-02-15 04:34:33 |
+|      160 | CHRIS       | DEPP         | 2006-02-15 04:34:33 |
+|      161 | HARVEY      | HOPE         | 2006-02-15 04:34:33 |
+|      162 | OPRAH       | KILMER       | 2006-02-15 04:34:33 |
+|      163 | CHRISTOPHER | WEST         | 2006-02-15 04:34:33 |
+|      164 | HUMPHREY    | WILLIS       | 2006-02-15 04:34:33 |
+|      165 | AL          | GARLAND      | 2006-02-15 04:34:33 |
+|      166 | NICK        | DEGENERES    | 2006-02-15 04:34:33 |
+|      167 | LAURENCE    | BULLOCK      | 2006-02-15 04:34:33 |
+|      168 | WILL        | WILSON       | 2006-02-15 04:34:33 |
+|      169 | KENNETH     | HOFFMAN      | 2006-02-15 04:34:33 |
+|      170 | MENA        | HOPPER       | 2006-02-15 04:34:33 |
+|      171 | OLYMPIA     | PFEIFFER     | 2006-02-15 04:34:33 |
+|      172 | GROUCHO     | WILLIAMS     | 2006-02-15 04:34:33 |
+|      173 | ALAN        | DREYFUSS     | 2006-02-15 04:34:33 |
+|      174 | MICHAEL     | BENING       | 2006-02-15 04:34:33 |
+|      175 | WILLIAM     | HACKMAN      | 2006-02-15 04:34:33 |
+|      176 | JON         | CHASE        | 2006-02-15 04:34:33 |
+|      177 | GENE        | MCKELLEN     | 2006-02-15 04:34:33 |
+|      178 | LISA        | MONROE       | 2006-02-15 04:34:33 |
+|      179 | ED          | GUINESS      | 2006-02-15 04:34:33 |
+|      180 | JEFF        | SILVERSTONE  | 2006-02-15 04:34:33 |
+|      181 | MATTHEW     | CARREY       | 2006-02-15 04:34:33 |
+|      182 | DEBBIE      | AKROYD       | 2006-02-15 04:34:33 |
+|      183 | RUSSELL     | CLOSE        | 2006-02-15 04:34:33 |
+|      184 | HUMPHREY    | GARLAND      | 2006-02-15 04:34:33 |
+|      185 | MICHAEL     | BOLGER       | 2006-02-15 04:34:33 |
+|      186 | JULIA       | ZELLWEGER    | 2006-02-15 04:34:33 |
+|      187 | RENEE       | BALL         | 2006-02-15 04:34:33 |
+|      188 | ROCK        | DUKAKIS      | 2006-02-15 04:34:33 |
+|      189 | CUBA        | BIRCH        | 2006-02-15 04:34:33 |
+|      190 | AUDREY      | BAILEY       | 2006-02-15 04:34:33 |
+|      191 | GREGORY     | GOODING      | 2006-02-15 04:34:33 |
+|      192 | JOHN        | SUVARI       | 2006-02-15 04:34:33 |
+|      193 | BURT        | TEMPLE       | 2006-02-15 04:34:33 |
+|      194 | MERYL       | ALLEN        | 2006-02-15 04:34:33 |
+|      195 | JAYNE       | SILVERSTONE  | 2006-02-15 04:34:33 |
+|      196 | BELA        | WALKEN       | 2006-02-15 04:34:33 |
+|      197 | REESE       | WEST         | 2006-02-15 04:34:33 |
+|      198 | MARY        | KEITEL       | 2006-02-15 04:34:33 |
+|      199 | JULIA       | FAWCETT      | 2006-02-15 04:34:33 |
+|      200 | THORA       | TEMPLE       | 2006-02-15 04:34:33 |
++----------+-------------+--------------+---------------------+
+200 rows in set (0.0089 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > use tbd_eva1;
+Default schema set to `tbd_eva1`.
+Fetching global names, object names from `tbd_eva1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create table actor like sakila.actor;
+Query OK, 0 rows affected (0.0401 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > show tables;
++--------------------+
+| Tables_in_tbd_eva1 |
++--------------------+
+| actor              |
+| automovil          |
+| cliente            |
+| docente            |
+| mascotas           |
+| pelicula           |
+| playeras           |
+| student            |
+| tv                 |
++--------------------+
+9 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > desc actor;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| actor_id    | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select count(*) from actor;
++----------+
+| count(*) |
++----------+
+|        0 |
++----------+
+1 row in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > show create table actor;
++-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table
+
+                                                                             |
++-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| actor | CREATE TABLE `actor` (
+  `actor_id` smallint unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`actor_id`),
+  KEY `idx_actor_last_name` (`last_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > use sakila;
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0015 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc customer;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| customer_id | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| store_id    | tinyint unsigned  | NO   | MUL | NULL              |                                               |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| email       | varchar(50)       | YES  |     | NULL              |                                               |
+| address_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| active      | tinyint(1)        | NO   |     | 1                 |                                               |
+| create_date | datetime          | NO   |     | NULL              |                                               |
+| last_update | timestamp         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.0018 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from customer
+                                       -> ;
++----------+
+| count(*) |
++----------+
+|      599 |
++----------+
+1 row in set (0.0160 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select * from customer limit 10;
++-------------+----------+------------+-----------+-------------------------------------+------------+--------+---------------------+---------------------+
+| customer_id | store_id | first_name | last_name | email                               | address_id | active | create_date         | last_update         |
++-------------+----------+------------+-----------+-------------------------------------+------------+--------+---------------------+---------------------+
+|           1 |        1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org       |          5 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           2 |        1 | PATRICIA   | JOHNSON   | PATRICIA.JOHNSON@sakilacustomer.org |          6 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           3 |        1 | LINDA      | WILLIAMS  | LINDA.WILLIAMS@sakilacustomer.org   |          7 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           4 |        2 | BARBARA    | JONES     | BARBARA.JONES@sakilacustomer.org    |          8 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           5 |        1 | ELIZABETH  | BROWN     | ELIZABETH.BROWN@sakilacustomer.org  |          9 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           6 |        2 | JENNIFER   | DAVIS     | JENNIFER.DAVIS@sakilacustomer.org   |         10 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           7 |        1 | MARIA      | MILLER    | MARIA.MILLER@sakilacustomer.org     |         11 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           8 |        2 | SUSAN      | WILSON    | SUSAN.WILSON@sakilacustomer.org     |         12 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|           9 |        2 | MARGARET   | MOORE     | MARGARET.MOORE@sakilacustomer.org   |         13 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
+|          10 |        1 | DOROTHY    | TAYLOR    | DOROTHY.TAYLOR@sakilacustomer.org   |         14 |      1 | 2006-02-14 22:04:36 | 2006-02-15 04:57:20 |
++-------------+----------+------------+-----------+-------------------------------------+------------+--------+---------------------+---------------------+
+10 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > use tbd_eva1;
+Default schema set to `tbd_eva1`.
+Fetching global names, object names from `tbd_eva1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create table cliente as
+                                         -> select * from sakila.customer;
+ERROR: 1050 (42S01): Table 'cliente' already exists
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create table clientes as  select * from sakila.customer;
+Query OK, 599 rows affected (0.0261 sec)
+
+Records: 599  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > desc clientes;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| customer_id | smallint unsigned | NO   |     | 0                 |                                               |
+| store_id    | tinyint unsigned  | NO   |     | NULL              |                                               |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   |     | NULL              |                                               |
+| email       | varchar(50)       | YES  |     | NULL              |                                               |
+| address_id  | smallint unsigned | NO   |     | NULL              |                                               |
+| active      | tinyint(1)        | NO   |     | 1                 |                                               |
+| create_date | datetime          | NO   |     | NULL              |                                               |
+| last_update | timestamp         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > use sakila;
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > use tbd_eva1;
+Default schema set to `tbd_eva1`.
+Fetching global names, object names from `tbd_eva1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create temporary table pais as
+                                         -> select * from sakila.country;
+Query OK, 109 rows affected (0.0274 sec)
+
+Records: 109  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > show tables;
++--------------------+
+| Tables_in_tbd_eva1 |
++--------------------+
+| actor              |
+| automovil          |
+| cliente            |
+| clientes           |
+| docente            |
+| mascotas           |
+| pelicula           |
+| playeras           |
+| student            |
+| tv                 |
++--------------------+
+10 rows in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from pais;
++------------+---------------------------------------+---------------------+
+| country_id | country                               | last_update         |
++------------+---------------------------------------+---------------------+
+|          1 | Afghanistan                           | 2006-02-15 04:44:00 |
+|          2 | Algeria                               | 2006-02-15 04:44:00 |
+|          3 | American Samoa                        | 2006-02-15 04:44:00 |
+|          4 | Angola                                | 2006-02-15 04:44:00 |
+|          5 | Anguilla                              | 2006-02-15 04:44:00 |
+|          6 | Argentina                             | 2006-02-15 04:44:00 |
+|          7 | Armenia                               | 2006-02-15 04:44:00 |
+|          8 | Australia                             | 2006-02-15 04:44:00 |
+|          9 | Austria                               | 2006-02-15 04:44:00 |
+|         10 | Azerbaijan                            | 2006-02-15 04:44:00 |
+|         11 | Bahrain                               | 2006-02-15 04:44:00 |
+|         12 | Bangladesh                            | 2006-02-15 04:44:00 |
+|         13 | Belarus                               | 2006-02-15 04:44:00 |
+|         14 | Bolivia                               | 2006-02-15 04:44:00 |
+|         15 | Brazil                                | 2006-02-15 04:44:00 |
+|         16 | Brunei                                | 2006-02-15 04:44:00 |
+|         17 | Bulgaria                              | 2006-02-15 04:44:00 |
+|         18 | Cambodia                              | 2006-02-15 04:44:00 |
+|         19 | Cameroon                              | 2006-02-15 04:44:00 |
+|         20 | Canada                                | 2006-02-15 04:44:00 |
+|         21 | Chad                                  | 2006-02-15 04:44:00 |
+|         22 | Chile                                 | 2006-02-15 04:44:00 |
+|         23 | China                                 | 2006-02-15 04:44:00 |
+|         24 | Colombia                              | 2006-02-15 04:44:00 |
+|         25 | Congo, The Democratic Republic of the | 2006-02-15 04:44:00 |
+|         26 | Czech Republic                        | 2006-02-15 04:44:00 |
+|         27 | Dominican Republic                    | 2006-02-15 04:44:00 |
+|         28 | Ecuador                               | 2006-02-15 04:44:00 |
+|         29 | Egypt                                 | 2006-02-15 04:44:00 |
+|         30 | Estonia                               | 2006-02-15 04:44:00 |
+|         31 | Ethiopia                              | 2006-02-15 04:44:00 |
+|         32 | Faroe Islands                         | 2006-02-15 04:44:00 |
+|         33 | Finland                               | 2006-02-15 04:44:00 |
+|         34 | France                                | 2006-02-15 04:44:00 |
+|         35 | French Guiana                         | 2006-02-15 04:44:00 |
+|         36 | French Polynesia                      | 2006-02-15 04:44:00 |
+|         37 | Gambia                                | 2006-02-15 04:44:00 |
+|         38 | Germany                               | 2006-02-15 04:44:00 |
+|         39 | Greece                                | 2006-02-15 04:44:00 |
+|         40 | Greenland                             | 2006-02-15 04:44:00 |
+|         41 | Holy See (Vatican City State)         | 2006-02-15 04:44:00 |
+|         42 | Hong Kong                             | 2006-02-15 04:44:00 |
+|         43 | Hungary                               | 2006-02-15 04:44:00 |
+|         44 | India                                 | 2006-02-15 04:44:00 |
+|         45 | Indonesia                             | 2006-02-15 04:44:00 |
+|         46 | Iran                                  | 2006-02-15 04:44:00 |
+|         47 | Iraq                                  | 2006-02-15 04:44:00 |
+|         48 | Israel                                | 2006-02-15 04:44:00 |
+|         49 | Italy                                 | 2006-02-15 04:44:00 |
+|         50 | Japan                                 | 2006-02-15 04:44:00 |
+|         51 | Kazakstan                             | 2006-02-15 04:44:00 |
+|         52 | Kenya                                 | 2006-02-15 04:44:00 |
+|         53 | Kuwait                                | 2006-02-15 04:44:00 |
+|         54 | Latvia                                | 2006-02-15 04:44:00 |
+|         55 | Liechtenstein                         | 2006-02-15 04:44:00 |
+|         56 | Lithuania                             | 2006-02-15 04:44:00 |
+|         57 | Madagascar                            | 2006-02-15 04:44:00 |
+|         58 | Malawi                                | 2006-02-15 04:44:00 |
+|         59 | Malaysia                              | 2006-02-15 04:44:00 |
+|         60 | Mexico                                | 2006-02-15 04:44:00 |
+|         61 | Moldova                               | 2006-02-15 04:44:00 |
+|         62 | Morocco                               | 2006-02-15 04:44:00 |
+|         63 | Mozambique                            | 2006-02-15 04:44:00 |
+|         64 | Myanmar                               | 2006-02-15 04:44:00 |
+|         65 | Nauru                                 | 2006-02-15 04:44:00 |
+|         66 | Nepal                                 | 2006-02-15 04:44:00 |
+|         67 | Netherlands                           | 2006-02-15 04:44:00 |
+|         68 | New Zealand                           | 2006-02-15 04:44:00 |
+|         69 | Nigeria                               | 2006-02-15 04:44:00 |
+|         70 | North Korea                           | 2006-02-15 04:44:00 |
+|         71 | Oman                                  | 2006-02-15 04:44:00 |
+|         72 | Pakistan                              | 2006-02-15 04:44:00 |
+|         73 | Paraguay                              | 2006-02-15 04:44:00 |
+|         74 | Peru                                  | 2006-02-15 04:44:00 |
+|         75 | Philippines                           | 2006-02-15 04:44:00 |
+|         76 | Poland                                | 2006-02-15 04:44:00 |
+|         77 | Puerto Rico                           | 2006-02-15 04:44:00 |
+|         78 | Romania                               | 2006-02-15 04:44:00 |
+|         79 | Réunion                               | 2006-02-15 04:44:00 |
+|         80 | Russian Federation                    | 2006-02-15 04:44:00 |
+|         81 | Saint Vincent and the Grenadines      | 2006-02-15 04:44:00 |
+|         82 | Saudi Arabia                          | 2006-02-15 04:44:00 |
+|         83 | Senegal                               | 2006-02-15 04:44:00 |
+|         84 | Slovakia                              | 2006-02-15 04:44:00 |
+|         85 | South Africa                          | 2006-02-15 04:44:00 |
+|         86 | South Korea                           | 2006-02-15 04:44:00 |
+|         87 | Spain                                 | 2006-02-15 04:44:00 |
+|         88 | Sri Lanka                             | 2006-02-15 04:44:00 |
+|         89 | Sudan                                 | 2006-02-15 04:44:00 |
+|         90 | Sweden                                | 2006-02-15 04:44:00 |
+|         91 | Switzerland                           | 2006-02-15 04:44:00 |
+|         92 | Taiwan                                | 2006-02-15 04:44:00 |
+|         93 | Tanzania                              | 2006-02-15 04:44:00 |
+|         94 | Thailand                              | 2006-02-15 04:44:00 |
+|         95 | Tonga                                 | 2006-02-15 04:44:00 |
+|         96 | Tunisia                               | 2006-02-15 04:44:00 |
+|         97 | Turkey                                | 2006-02-15 04:44:00 |
+|         98 | Turkmenistan                          | 2006-02-15 04:44:00 |
+|         99 | Tuvalu                                | 2006-02-15 04:44:00 |
+|        100 | Ukraine                               | 2006-02-15 04:44:00 |
+|        101 | United Arab Emirates                  | 2006-02-15 04:44:00 |
+|        102 | United Kingdom                        | 2006-02-15 04:44:00 |
+|        103 | United States                         | 2006-02-15 04:44:00 |
+|        104 | Venezuela                             | 2006-02-15 04:44:00 |
+|        105 | Vietnam                               | 2006-02-15 04:44:00 |
+|        106 | Virgin Islands, U.S.                  | 2006-02-15 04:44:00 |
+|        107 | Yemen                                 | 2006-02-15 04:44:00 |
+|        108 | Yugoslavia                            | 2006-02-15 04:44:00 |
+|        109 | Zambia                                | 2006-02-15 04:44:00 |
++------------+---------------------------------------+---------------------+
+109 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create table film as
+                                         -> select * from sakila.film;
+Query OK, 1000 rows affected (0.0600 sec)
+
+Records: 1000  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create temporary table categoria like sakila.category;
+Query OK, 0 rows affected (0.0099 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create table film2 as select name from sakila.film;
+ERROR: 1054 (42S22): Unknown column 'name' in 'field list'
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > desc film;
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field                | Type                                                                | Null | Key | Default           | Extra
+                  |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id              | smallint unsigned                                                   | NO   |     | 0                 |
+                  |
+| title                | varchar(128)                                                        | NO   |     | NULL              |
+                  |
+| description          | text                                                                | YES  |     | NULL              |
+                  |
+| release_year         | year                                                                | YES  |     | NULL              |
+                  |
+| language_id          | tinyint unsigned                                                    | NO   |     | NULL              |
+                  |
+| original_language_id | tinyint unsigned                                                    | YES  |     | NULL              |
+                  |
+| rental_duration      | tinyint unsigned                                                    | NO   |     | 3                 |
+                  |
+| rental_rate          | decimal(4,2)                                                        | NO   |     | 4.99              |
+                  |
+| length               | smallint unsigned                                                   | YES  |     | NULL              |
+                  |
+| replacement_cost     | decimal(5,2)                                                        | NO   |     | 19.99             |
+                  |
+| rating               | enum('G','PG','PG-13','R','NC-17')                                  | YES  |     | G                 |
+                  |
+| special_features     | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL              |
+                  |
+| last_update          | timestamp                                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+13 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > create table film2 as select title from sakila.film;
+Query OK, 1000 rows affected (0.0394 sec)
+
+Records: 1000  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > show tables;
++--------------------+
+| Tables_in_tbd_eva1 |
++--------------------+
+| actor              |
+| automovil          |
+| cliente            |
+| clientes           |
+| docente            |
+| film               |
+| film2              |
+| mascotas           |
+| pelicula           |
+| playeras           |
+| student            |
+| tv                 |
++--------------------+
+12 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from film limit 1;
++---------+------------------+--------------------------------------------------------------------------------------------------+--------------+-------------+----------------------+-----------------+-------------+--------+------------------+--------+----------------------------------+---------------------+
+| film_id | title            | description                                                                                      | release_year | language_id | original_language_id | rental_duration | rental_rate | length | replacement_cost | rating | special_features                 | last_update         |
++---------+------------------+--------------------------------------------------------------------------------------------------+--------------+-------------+----------------------+-----------------+-------------+--------+------------------+--------+----------------------------------+---------------------+
+|       1 | ACADEMY DINOSAUR | A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies |         2006 |           1 |                 NULL |               6 |        0.99 |     86 |            20.99 | PG     | Deleted Scenes,Behind the Scenes | 2006-02-15 05:03:42 |
++---------+------------------+--------------------------------------------------------------------------------------------------+--------------+-------------+----------------------+-----------------+-------------+--------+------------------+--------+----------------------------------+---------------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from film2 limit 1;
++------------------+
+| title            |
++------------------+
+| ACADEMY DINOSAUR |
++------------------+
+1 row in set (0.0004 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from film2 limit 10;
++------------------+
+| title            |
++------------------+
+| ACADEMY DINOSAUR |
+| ACE GOLDFINGER   |
+| ADAPTATION HOLES |
+| AFFAIR PREJUDICE |
+| AFRICAN EGG      |
+| AGENT TRUMAN     |
+| AIRPLANE SIERRA  |
+| AIRPORT POLLOCK  |
+| ALABAMA DEVIL    |
+| ALADDIN CALENDAR |
++------------------+
+10 rows in set (0.0004 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select * from film limit 10;
++---------+------------------+-----------------------------------------------------------------------------------------------------------------------+--------------+-------------+----------------------+-----------------+-------------+--------+------------------+--------+----------------------------------+---------------------+
+| film_id | title            | description                                                                                                           | release_year | language_id | original_language_id | rental_duration | rental_rate | length | replacement_cost | rating | special_features                 | last_update         |
++---------+------------------+-----------------------------------------------------------------------------------------------------------------------+--------------+-------------+----------------------+-----------------+-------------+--------+------------------+--------+----------------------------------+---------------------+
+|       1 | ACADEMY DINOSAUR | A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies                      |         2006 |           1 |                 NULL |               6 |        0.99 |     86 |            20.99 | PG     | Deleted Scenes,Behind the Scenes | 2006-02-15 05:03:42 |
+|       2 | ACE GOLDFINGER   | A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China                  |         2006 |           1 |                 NULL |               3 |        4.99 |     48 |            12.99 | G      | Trailers,Deleted Scenes          | 2006-02-15 05:03:42 |
+|       3 | ADAPTATION HOLES | A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in A Baloon Factory                      |         2006 |           1 |                 NULL |               7 |        2.99 |     50 |            18.99 | NC-17  | Trailers,Deleted Scenes          | 2006-02-15 05:03:42 |
+|       4 | AFFAIR PREJUDICE | A Fanciful Documentary of a Frisbee And a Lumberjack who must Chase a Monkey in A Shark Tank                          |         2006 |           1 |                 NULL |               5 |        2.99 |    117 |            26.99 | G      | Commentaries,Behind the Scenes   | 2006-02-15 05:03:42 |
+|       5 | AFRICAN EGG      | A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico |         2006 |           1 |                 NULL |               6 |        2.99 |    130 |            22.99 | G      | Deleted Scenes                   | 2006-02-15 05:03:42 |
+|       6 | AGENT TRUMAN     | A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China                             |         2006 |           1 |                 NULL |               3 |        2.99 |    169 |            17.99 | PG     | Deleted Scenes                   | 2006-02-15 05:03:42 |
+|       7 | AIRPLANE SIERRA  | A Touching Saga of a Hunter And a Butler who must Discover a Butler in A Jet Boat                                     |         2006 |           1 |                 NULL |               6 |        4.99 |     62 |            28.99 | PG-13  | Trailers,Deleted Scenes          | 2006-02-15 05:03:42 |
+|       8 | AIRPORT POLLOCK  | A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India                                         |         2006 |           1 |                 NULL |               6 |        4.99 |     54 |            15.99 | R      | Trailers                         | 2006-02-15 05:03:42 |
+|       9 | ALABAMA DEVIL    | A Thoughtful Panorama of a Database Administrator And a Mad Scientist who must Outgun a Mad Scientist in A Jet Boat   |         2006 |           1 |                 NULL |               3 |        2.99 |    114 |            21.99 | PG-13  | Trailers,Deleted Scenes          | 2006-02-15 05:03:42 |
+|      10 | ALADDIN CALENDAR | A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China                             |         2006 |           1 |                 NULL |               6 |        4.99 |     63 |            24.99 | NC-17  | Trailers,Deleted Scenes          | 2006-02-15 05:03:42 |
++---------+------------------+-----------------------------------------------------------------------------------------------------------------------+--------------+-------------+----------------------+-----------------+-------------+--------+------------------+--------+----------------------------------+---------------------+
+10 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL > select title, description from film limit 10;
++------------------+-----------------------------------------------------------------------------------------------------------------------+
+| title            | description                                                                                                           |
++------------------+-----------------------------------------------------------------------------------------------------------------------+
+| ACADEMY DINOSAUR | A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies                      |
+| ACE GOLDFINGER   | A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China                  |
+| ADAPTATION HOLES | A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in A Baloon Factory                      |
+| AFFAIR PREJUDICE | A Fanciful Documentary of a Frisbee And a Lumberjack who must Chase a Monkey in A Shark Tank                          |
+| AFRICAN EGG      | A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico |
+| AGENT TRUMAN     | A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China                             |
+| AIRPLANE SIERRA  | A Touching Saga of a Hunter And a Butler who must Discover a Butler in A Jet Boat                                     |
+| AIRPORT POLLOCK  | A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India                                         |
+| ALABAMA DEVIL    | A Thoughtful Panorama of a Database Administrator And a Mad Scientist who must Outgun a Mad Scientist in A Jet Boat   |
+| ALADDIN CALENDAR | A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China                             |
++------------------+-----------------------------------------------------------------------------------------------------------------------+
+10 rows in set (0.0004 sec)
+ MySQL  localhost:3306 ssl  tbd_eva1  SQL >
