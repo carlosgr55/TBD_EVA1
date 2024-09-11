@@ -1,0 +1,86 @@
+EVA1_10_EJERCICIO_NORMALIZACION
+
+MySQL Shell 8.0.37
+
+Copyright (c) 2016, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 11
+Server version: 8.0.37 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create database empresa;
+Query OK, 1 row affected (0.0110 sec)
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| empresa            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| tbd_eva1           |
+| veterinaria_bd     |
+| veterinaria_schema |
++--------------------+
+8 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  SQL > use empresa;
+Default schema set to `empresa`.
+Fetching global names, object names from `empresa` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  empresa  SQL > create table employee(
+                                        -> eeid varchar(7) key,
+                                        -> full_name varchar(100) not null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+ MySQL  localhost:3306 ssl  empresa  SQL > create table employee( eeid varchar(7) key, full_name varchar(100) not null,
+                                        -> gender enum('male','female', 'other') not null,
+                                        -> ethnicity enum('white','black','latino','asian') not null,
+                                        -> age int not null);
+Query OK, 0 rows affected (0.0213 sec)
+ MySQL  localhost:3306 ssl  empresa  SQL > desc employee;
++-----------+----------------------------------------+------+-----+---------+-------+
+| Field     | Type                                   | Null | Key | Default | Extra |
++-----------+----------------------------------------+------+-----+---------+-------+
+| eeid      | varchar(7)                             | NO   | PRI | NULL    |       |
+| full_name | varchar(100)                           | NO   |     | NULL    |       |
+| gender    | enum('male','female','other')          | NO   |     | NULL    |       |
+| ethnicity | enum('white','black','latino','asian') | NO   |     | NULL    |       |
+| age       | int                                    | NO   |     | NULL    |       |
++-----------+----------------------------------------+------+-----+---------+-------+
+5 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  empresa  SQL > create table jobs(
+                                        -> id int auto_increment key,
+                                        -> eeid varchar(7),
+                                        -> desc employee;^C
+ MySQL  localhost:3306 ssl  empresa  SQL > create table jobs(
+                                        -> id int auto_increment key,
+                                        -> eeid varchar(7) not null,
+                                        -> job_title varchar(50) not null,
+                                        -> department varchar(50) not null,
+                                        -> bussiness_unit varchar(60) not null);
+Query OK, 0 rows affected (0.0216 sec)
+ MySQL  localhost:3306 ssl  empresa  SQL > create table salary(
+                                        -> id int auto_increment key,
+                                        -> eeid varchar(7) not null,
+                                        -> annual_salary decimal(6,2) not null,
+                                        -> bonut int not null);
+Query OK, 0 rows affected (0.0211 sec)
+ MySQL  localhost:3306 ssl  empresa  SQL > create table dates(
+                                        -> id int auto_increment key,
+                                        -> eeid varchar(7) not null,
+                                        -> hire_date varchar(10) not null,
+                                        -> exit_date varchar(10));
+Query OK, 0 rows affected (0.0211 sec)
+ MySQL  localhost:3306 ssl  empresa  SQL > create table location(
+                                        -> id int auto_increment key,
+                                        -> eeid varchar(7) not null,
+                                        -> country varchar(100) not null,
+                                        -> city varchar(100) not null);
+Query OK, 0 rows affected (0.0132 sec)
+ MySQL  localhost:3306 ssl  empresa  SQL >
